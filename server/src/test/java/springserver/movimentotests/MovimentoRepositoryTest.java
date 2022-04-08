@@ -36,7 +36,7 @@ public class MovimentoRepositoryTest {
 
         movimento.setConta(conta);
         movimento.setValor(new BigDecimal(100L));
-        movimento.setMovimentoTipo(MovimentoTipo.DESPESA);
+        movimento.setMovimentotipo(MovimentoTipo.DESPESA);
         movimento.setDescricao("Teste");
 
         testEntityManager.persist(conta);
@@ -59,14 +59,14 @@ public class MovimentoRepositoryTest {
 
         movimento.setConta(conta);
         movimento.setValor(new BigDecimal(100L));
-        movimento.setMovimentoTipo(MovimentoTipo.DESPESA);
+        movimento.setMovimentotipo(MovimentoTipo.DESPESA);
         movimento.setDescricao("Teste");
 
         testEntityManager.persist(conta);
         testEntityManager.persist(movimento);
         testEntityManager.flush();
 
-        movimentoRepository.findByContaIdAndMovimentoTipo(1L, MovimentoTipo.DESPESA);
+        movimentoRepository.findByContaIdAndMovimentotipo(1L, MovimentoTipo.DESPESA);
     }
 
 

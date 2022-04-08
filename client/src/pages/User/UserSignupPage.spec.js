@@ -12,8 +12,8 @@ describe('UserSignupPage', () => {
 
         it('has input for display name', () => {
             const { queryByPlaceholderText } = render(<UserSignupPage />);
-            const displayNameInput = queryByPlaceholderText('Informe o seu nome');
-            expect(displayNameInput).toBeInTheDocument();
+            const displaynameInput = queryByPlaceholderText('Informe o seu nome');
+            expect(displaynameInput).toBeInTheDocument();
         });
         it('has input for username', () => {
             const { queryByPlaceholderText } = render(<UserSignupPage />);
@@ -78,18 +78,18 @@ describe('UserSignupPage', () => {
             });
         }
 
-        let displayNameInput, usernameInput, passwordInput, repeatPasswordInput, button;
+        let displaynameInput, usernameInput, passwordInput, repeatPasswordInput, button;
         const setupForSubmit = (props) => {
             const rendered = render(<UserSignupPage {...props} />)
 
             const { container, queryByPlaceholderText } = rendered;
 
-            displayNameInput = queryByPlaceholderText('Informe o seu nome');
+            displaynameInput = queryByPlaceholderText('Informe o seu nome');
             usernameInput = queryByPlaceholderText('Informe o usuário');
             passwordInput = queryByPlaceholderText('Informe a sua senha');
             repeatPasswordInput = queryByPlaceholderText('Confirme sua senha');
 
-            fireEvent.change(displayNameInput, changeEvent('my-display-name'));
+            fireEvent.change(displaynameInput, changeEvent('my-display-name'));
             fireEvent.change(usernameInput, changeEvent('my-username'));
             fireEvent.change(passwordInput, changeEvent('P4ssword'));
             fireEvent.change(repeatPasswordInput, changeEvent('P4ssword'));
@@ -99,11 +99,11 @@ describe('UserSignupPage', () => {
             return rendered;
         }
 
-        it('sets the displayName value into state', () => {
+        it('sets the displayname value into state', () => {
             const { queryByPlaceholderText } = render(<UserSignupPage />);
-            const displayNameInput = queryByPlaceholderText('Informe o seu nome');
-            fireEvent.change(displayNameInput, changeEvent('my-display-name'));
-            expect(displayNameInput).toHaveValue('my-display-name');
+            const displayname = queryByPlaceholderText('Informe o seu nome');
+            fireEvent.change(displaynameInput, changeEvent('my-display-name'));
+            expect(displaynameInput).toHaveValue('my-display-name');
         });
 
         it('sets the username value into state', () => {
@@ -148,7 +148,7 @@ describe('UserSignupPage', () => {
             fireEvent.click(button);
 
             const expectedUserObject = {
-                displayName: 'my-display-name',
+                displayname: 'my-display-name',
                 username: 'my-username',
                 password: 'P4ssword',
             }
@@ -202,13 +202,13 @@ describe('UserSignupPage', () => {
             expect(spinner).not.toBeInTheDocument();
         });
 
-        it('displays validation error for displayName when error is received for the field', async () => {
+        it('displays validation error for displayname when error is received for the field', async () => {
             const actions = {
                 postSignup: jest.fn().mockRejectedValue({
                     response : {
                         data: {
                             validationErrors: {
-                                displayName: "Cannot be null"
+                                displayname: "Cannot be null"
                             },
                         },
                     },

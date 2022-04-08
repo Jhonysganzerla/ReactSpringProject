@@ -23,11 +23,11 @@ public class Movimento {
     @NotNull(message = "O campo valor não pode ser nulo")
     private BigDecimal valor;
 
-    private LocalDate dataVencimento;
+    private LocalDate datavencimento;
 
-    private LocalDate dataPagamento;
+    private LocalDate datapagamento;
 
-    private BigDecimal valorPago;
+    private BigDecimal valorpago;
 
     private String categoria;
 
@@ -35,6 +35,6 @@ public class Movimento {
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "O campo 'tipo' é obrigatório")
-    private MovimentoTipo movimentoTipo;
+    private MovimentoTipo movimentotipo;
 
 }

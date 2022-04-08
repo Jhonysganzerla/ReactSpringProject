@@ -81,7 +81,7 @@ public class UserControllerTest {
     @Test
     public void postUser_whenUserHasNullDisplayName_receiveBadRequest() {
         User user = createValidUser();
-        user.setDisplayName(null);
+        user.setDisplayname(null);
         ResponseEntity<Object> response = postSignup(user, Object.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
@@ -105,7 +105,7 @@ public class UserControllerTest {
     @Test
     public void postUser_whenUserHasDisplayNameWithLessThenRequired_receiveBadRequest() {
         User user = createValidUser();
-        user.setDisplayName("123");
+        user.setDisplayname("123");
         ResponseEntity<Object> response = postSignup(user, Object.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
@@ -188,7 +188,7 @@ public class UserControllerTest {
     private User createValidUser() {
         User user = new User();
         user.setUsername("test-user");
-        user.setDisplayName("test-display");
+        user.setDisplayname("test-display");
         user.setPassword("P4ssword");
         return user;
     }

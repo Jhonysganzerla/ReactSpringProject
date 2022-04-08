@@ -3,9 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import UserSignupPage from './pages/UserSignupPage';
 import * as apiCalls from './api/apiCalls';
-
+import UserSignupPage from './pages/User/UserSignupPage';
 const actions = {
   postSignup: apiCalls.postSignup
 }

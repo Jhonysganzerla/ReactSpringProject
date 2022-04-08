@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Form } from 'react-bootstrap';
 
 const Input = (props) => {
     let inputClassName = 'form-control';
@@ -7,17 +8,17 @@ const Input = (props) => {
     }
 
     return (
-        <div>
-            {props.label && <label>{props.label}</label>}
-            <input
+        <Form.Group>
+            {props.label && (<Form.Label>{props.label}</Form.Label>)}
+            <Form.Control  
                 className={inputClassName}
                 type={props.type || 'text'}
                 placeholder={props.placeholder}
                 value={props.value}
                 onChange={props.onChange}
             />
-            {props.hasError && (<div className="invalid-feedback">{props.error}</div>)}
-        </div>
+            {props.hasError && (<Form.Control.Feedback type="invalid"> {props.error}</Form.Control.Feedback>)}
+        </Form.Group>
     )
 }
 Input.defaultProps = {

@@ -9,5 +9,5 @@ public interface MovimentoRepository extends JpaRepository<Movimento, Long> {
 
     Movimento findByConta(Conta conta);
 
-    Movimento findByContaIdAndMovimentoTipo(Long id, MovimentoTipo tipo);
+    Movimento findByContaIdAndMovimentotipo(Long id, MovimentoTipo tipo);
 }

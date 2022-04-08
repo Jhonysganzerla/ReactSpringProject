@@ -17,18 +17,18 @@ public class User {
     @GeneratedValue
     private long id;
 
-    @NotNull(message = "{jhony.constraints.NotNull.message}")
-    @Size(min = 4, max = 255, message = "O tamanho deve ser entre {min} e {max}")
+    @NotNull(message = "{user.constraints.NotNull.message}")
+    @Size(min = 4, max = 255, message = " O tamanho deve ser entre {min} e {max}")
     @UniqueUsername
     private String username;
 
     @NotNull
-    @Size(min = 4, max = 255)
-    private String displayName;
+    @Size(min = 4, max = 255, message = " O tamanho deve ser entre {min} e {max}")
+    private String displayname;
 
     @NotNull
     @Size(min = 6, max = 255)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "A senha deve conter letras maiúsculas, minúsculas e números")
     private String password;
 
 }

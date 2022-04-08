@@ -1,5 +1,6 @@
 package springserver.controller;
 
+import org.springframework.http.ResponseEntity;
 import springserver.error.ApiError;
 import springserver.model.User;
 import springserver.service.UserService;
@@ -22,17 +23,17 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping
-    GenericResponse createUser(@Valid @RequestBody User user) {
+
+    @PostMapping("/signup")
+    public GenericResponse signup(@Valid @RequestBody User user) {
         userService.save(user);
-
-        return new GenericResponse("Registro salvo.");
+        return new GenericResponse("User registered successfully");
     }
-
-    @GetMapping
-    String teste() {
-        return "TESTE";
-    }
+//    GenericResponse createUser(@Valid @RequestBody User user) {
+//        userService.save(user);
+//
+//        return new GenericResponse("Registro salvo.");
+//    }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueUsername {
-    String message() default "{jhony.constraints.UniqueUsername.message}";
+    String message() default "{user.constraints.UniqueUsername.message}";
 
     Class<?>[] groups() default {};
 

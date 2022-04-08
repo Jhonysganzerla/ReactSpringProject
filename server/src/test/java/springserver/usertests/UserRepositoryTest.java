@@ -22,7 +22,7 @@ public class UserRepositoryTest {
     @Test
     public void findByUsername_whenUserExists_returnsUser() {
         User user = new User();
-        user.setDisplayName("test-displayName");
+        user.setDisplayname("test-displayName");
         user.setUsername("test-username");
         user.setPassword("P4ssword");
         testEntityManager.persist(user);
