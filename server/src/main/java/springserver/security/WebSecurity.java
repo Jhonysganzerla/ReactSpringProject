@@ -18,7 +18,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
-
     @Autowired
     private AuthUserService authUserService;
 
@@ -26,21 +25,31 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private AuthenticationEntryPoint authenticationEntryPoint;
 
     @Override
-    protected void configure(final HttpSecurity http) throws Exception {
+    protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
-                .authorizeRequests().antMatchers(HttpMethod.POST,"/users").permitAll()
-                .antMatchers(HttpMethod.GET,"/users").hasAnyRole("ADMIN")
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .anyRequest().authenticated()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+                .and()
+                // Filters
+                .addFilter(
+                        new JWTAuthenticationFilter(authenticationManager(),
+                                getApplicationContext()))
+                .addFilter(
+                        new JWTAuthorizationFilter(authenticationManager(),
+                                getApplicationContext())
+                )
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+    protected void configure(AuthenticationManagerBuilder auth)
+            throws Exception {
+        auth.userDetailsService(userDetailsService())
+                .passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -52,6 +61,5 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-
     }
 }
