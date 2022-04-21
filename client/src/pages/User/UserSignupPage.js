@@ -1,8 +1,7 @@
-import { Button } from "react-bootstrap";
 import React from "react";
 import Input from '../../components/input';
 import axios from "axios";
-import { Alert } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 
 export class UserSignupPage extends React.Component {
 
@@ -69,7 +68,7 @@ export class UserSignupPage extends React.Component {
         return (
             <div className="container">
                 {this.state.successMessage != '' && (<Alert variant="success" onClose={() => this.state.successMessage != ''} dismissible>
-                        <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+                        <Alert.Heading>Oh não! Ocorreu um erro!, mas deve ta verde</Alert.Heading>
                 </Alert>)}
 
                 <h1 >Sign Up</h1>
@@ -114,7 +113,7 @@ export class UserSignupPage extends React.Component {
                         error={this.state.errors.password} />
                 </div>
                 <div>
-                    <Button  variant="primary" 
+                    <Button variant="primary" 
                         disabled={this.state.pendingApiCall}
                         onClick={this.onClickSignup}
                     >
