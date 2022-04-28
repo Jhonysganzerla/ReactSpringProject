@@ -1,135 +1,134 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from '../../components/input';
+import ButtonWithProgress from '../../components/buttonWithProgress';
+
 import axios from "axios";
 import { Button, Alert } from "react-bootstrap";
+import AuthService from "../../services/Auth/auth.service";
 
-export class UserSignupPage extends React.Component {
+export const UserSignupPage = (props) => {
 
-    state = {
+    const [form, setForm] = useState({
         displayname: '',
         username: '',
         password: '',
         passwordRepeat: '',
-        pendingApiCall: false,
-        errors: {},
-        successMessage: '',
-    }
+    });
 
-    onChangeDisplayName = (event) => {
-        const value = event.target.value;
-        this.setState({ displayname: value });
-    }
+    const [pendingApiCall, setPendingApiCall ] = useState(false);
+    const [errors, setErrors] = useState({});
+    const [successMessage, setSuccessMessage] = useState('');
 
-    onChangeUsername = (event) => {
-        const value = event.target.value;
-        this.setState({ username: value });
-    }
+    const onChange = (event) => {   
+        const { value, name } = event.target;
+        
+        setForm((previousForm) => {
+            return {
+                ...previousForm,
+                [name]: value,
+            };
+        });
 
-    onChangePassword = (event) => {
-        const value = event.target.value;
-        this.setState({ password: value });
-    }
-    onChangePasswordRepeat = (event) => {
-        const value = event.target.value;
-        this.setState({ passwordRepeat: value });
-    }
+        setErrors((previousErrors) => {
+            return {
+                ...previousErrors,
+                [name]: undefined,
+            };
+        });
+    };
 
     
-    onClickSignup = () => {
+    const onClickSignup = () => {
         const user = {
-            displayname: this.state.displayname,
-            username: this.state.username,
-            password: this.state.password,
+            displayname: form.displayname,
+            username: form.username,
+            password: form.password,
         }
-        this.setState({ pendingApiCall: true });
-        this.saveUser(user).then(response => {
+        setPendingApiCall(true);
+        AuthService.saveUser(user).then(response => {
             console.log(response.data.message);
-            this.state.errors = {};
-            this.setState({ pendingApiCall: false });
+            form.errors = {};
+            setPendingApiCall(false);
         })
             .catch(apiError => {
 
-            console.log(apiError)
-
-                let errors = { ...this.state.errors }
+                let errors = { ...errors }
                 if (apiError.response.data && apiError.response.data.validationErrors) {
                     errors = { ...apiError.response.data.validationErrors }
                 }
-                this.setState({ pendingApiCall: false, errors });
+                setPendingApiCall(true);
+                setErrors(errors);
             });
+     }
 
+    let passwordRepeatError;
+    const { password, passwordRepeat } = form;
+    if (password || passwordRepeat) {
+        passwordRepeatError = password === passwordRepeat ? '' : 'As senhas devem ser iguais';
     }
 
-    saveUser = (user) => {
-        return axios.post('/users/signup', user);
-    } 
-
-    render() {
         return (
             <div className="container">
-                {this.state.successMessage != '' && (<Alert variant="success" onClose={() => this.state.successMessage != ''} dismissible>
+                {successMessage != '' && (<Alert variant="success" onClose={() => form.successMessage != ''} dismissible>
                         <Alert.Heading>Oh não! Ocorreu um erro!, mas deve ta verde</Alert.Heading>
                 </Alert>)}
 
                 <h1 >Sign Up</h1>
                 <div className="col-4 mb-3">
                     <Input
+                        name="displayname"
                         label="Informe o seu nome"
                         type="text"
                         placeholder="Informe o seu nome"
-                        value={this.state.displayname}
-                        onChange={this.onChangeDisplayName}
-                        hasError={this.state.errors.displayname && true}
-                        error={this.state.errors.displayname}
+                        value={form.displayname}
+                        onChange={onChange}
+                        hasError={errors.displayname && true}
+                        error={errors.displayname}
                     />
 
                 </div>
                 <div className="col-4 mb-3">
                     <Input className="form-control"
+                        name="username"
                         label="Informe o usuário"
                         type="text" placeholder="Informe o usuário"
-                        value={this.state.username}
-                        onChange={this.onChangeUsername}   
-                        hasError={this.state.errors.username && true}
-                        error={this.state.errors.username}/>
+                        value={form.username}
+                        onChange={onChange}
+                        hasError={errors.username && true}
+                        error={errors.username}/>
                 </div>
                 <div className="col-4 mb-3">
                     <Input className="form-control"
-                    label="Informe a sua senha"
+                        name="password"
+                        label="Informe a sua senha"
                         type="password" placeholder="Informe a sua senha"
-                        value={this.state.password}
-                        onChange={this.onChangePassword} 
-                        hasError={this.state.errors.password && true}
-                        error={this.state.errors.password}
+                        value={form.password}
+                        onChange={onChange}
+                        hasError={errors.password && true}
+                        error={errors.password}
                         />
                 </div>
                 <div className="col-4 mb-3">
                     <Input className="form-control"
+                        name="passwordRepeat"
                         label="Repita a sua senha"
                         type="password" placeholder="Confirme sua senha"
-                        value={this.state.passwordRepeat}
-                        onChange={this.onChangePasswordRepeat}  
-                        hasError={this.state.errors.password && true}
-                        error={this.state.errors.password} />
+                        value={form.passwordRepeat}
+                        onChange={onChange}
+                        hasError={passwordRepeatError && true}
+                        error={errors.password} />
                 </div>
-                <div>
-                    <Button variant="primary" 
-                        disabled={this.state.pendingApiCall}
-                        onClick={this.onClickSignup}
-                    >
-                        {this.state.pendingApiCall && (
-                            <div className="spinner-border text-light spinner-border-sm mr-sm-1"
-                                role="status">
-                                <span className="visually-hidden">Aguarde...</span>
-                            </div>
-                        )}
-                        Cadastrar
-                    </Button >
+                <div className="text-center">
+                    <ButtonWithProgress
+                        disabled={pendingApiCall || passwordRepeatError ? true : false}
+                        onClick={onClickSignup}
+                        pendingApiCall={pendingApiCall}
+                        text="Cadastrar"
+                    />
                 </div>
             </div>
         )
-    }
-}
+    };
 
 UserSignupPage.defaultProps = {
     actions: {
@@ -139,4 +138,5 @@ UserSignupPage.defaultProps = {
             }),
     }
 }
+
 export default UserSignupPage;
