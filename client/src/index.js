@@ -4,15 +4,18 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import * as apiCalls from './api/apiCalls';
 import LoginPage from './pages/Login/LoginPage';
-const actions = {
-  postLogin: apiCalls.login
-}
+import UserSignupPage from './pages/User/UserSignupPage';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <LoginPage actions={actions} />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
-  document.getElementById('root')
+   document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

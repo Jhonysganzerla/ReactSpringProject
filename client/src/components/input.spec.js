@@ -50,35 +50,17 @@ describe('Layout', () => {
         const { container } = render(<Input onChange={onChange} />);
         const input = container.querySelector('input');
 
-        fireEvent.change(input,{target: { value: 'new-value'}});        
+        fireEvent.change(input, { target: { value: 'new-value' } });
         expect(onChange).toHaveBeenCalledTimes(1);
     });
-
-    it('has default style when there is no validation errors os success', () => {
-        const { container } = render(<Input />);
-        const input = container.querySelector('input');
-        expect(input.className).toBe('form-control');
-    });
-
-    it('has success style when hasError property is false', () => {
-        const { container } = render(<Input hasError={false} />);
-        const input = container.querySelector('input');
-        expect(input.className).toBe('form-control is-valid');
-    });
-    it('has success style when hasError property is true', () => {
-        const { container } = render(<Input hasError={true} />);
-        const input = container.querySelector('input');
-        expect(input.className).toBe('form-control is-invalid');
-    });
-
     it('displays the error message when it is provided', () => {
         const { queryByText } = render(<Input hasError={true} error="Cannot be null" />);
-        
+
         expect(queryByText("Cannot be null")).toBeInTheDocument();
     });
     it('does not displays the error message when it is provided', () => {
         const { queryByText } = render(<Input error="Cannot be null" />);
-        
+
         expect(queryByText("Cannot be null")).not.toBeInTheDocument();
     });
 });

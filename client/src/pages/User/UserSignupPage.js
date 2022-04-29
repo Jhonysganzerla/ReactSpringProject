@@ -5,6 +5,7 @@ import ButtonWithProgress from '../../components/buttonWithProgress';
 import axios from "axios";
 import { Button, Alert } from "react-bootstrap";
 import AuthService from "../../services/Auth/auth.service";
+import { Link, useNavigate } from "react-router-dom";
 
 export const UserSignupPage = (props) => {
 
@@ -15,13 +16,15 @@ export const UserSignupPage = (props) => {
         passwordRepeat: '',
     });
 
-    const [pendingApiCall, setPendingApiCall ] = useState(false);
+    const [pendingApiCall, setPendingApiCall] = useState(false);
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
 
-    const onChange = (event) => {   
+    const navigate = useNavigate();
+
+    const onChange = (event) => {
         const { value, name } = event.target;
-        
+
         setForm((previousForm) => {
             return {
                 ...previousForm,
@@ -37,7 +40,7 @@ export const UserSignupPage = (props) => {
         });
     };
 
-    
+
     const onClickSignup = () => {
         const user = {
             displayname: form.displayname,
@@ -46,9 +49,9 @@ export const UserSignupPage = (props) => {
         }
         setPendingApiCall(true);
         AuthService.saveUser(user).then(response => {
-            console.log(response.data.message);
             form.errors = {};
             setPendingApiCall(false);
+            navigate('/');
         })
             .catch(apiError => {
 
@@ -59,7 +62,7 @@ export const UserSignupPage = (props) => {
                 setPendingApiCall(true);
                 setErrors(errors);
             });
-     }
+    }
 
     let passwordRepeatError;
     const { password, passwordRepeat } = form;
@@ -67,14 +70,15 @@ export const UserSignupPage = (props) => {
         passwordRepeatError = password === passwordRepeat ? '' : 'As senhas devem ser iguais';
     }
 
-        return (
-            <div className="container">
-                {successMessage != '' && (<Alert variant="success" onClose={() => form.successMessage != ''} dismissible>
-                        <Alert.Heading>Oh não! Ocorreu um erro!, mas deve ta verde</Alert.Heading>
-                </Alert>)}
+    return (
+        <div className="container">
+            {successMessage != '' && (<Alert variant="success" onClose={() => successMessage != ''} dismissible>
+                <Alert.Heading>Oh não! Ocorreu um erro!, mas deve ta verde</Alert.Heading>
+            </Alert>)}
 
-                <h1 >Sign Up</h1>
-                <div className="col-4 mb-3">
+            <h1 >Sign Up</h1>
+            <div className="text-center col-12 mb-3">
+                <div className="col-4">
                     <Input
                         name="displayname"
                         label="Informe o seu nome"
@@ -85,31 +89,39 @@ export const UserSignupPage = (props) => {
                         hasError={errors.displayname && true}
                         error={errors.displayname}
                     />
-
                 </div>
-                <div className="col-4 mb-3">
-                    <Input className="form-control"
+
+            </div>
+            <div className="text-center col-12 mb-3">
+                <div className="col-4">
+                    <Input
                         name="username"
                         label="Informe o usuário"
-                        type="text" placeholder="Informe o usuário"
+                        type="text"
+                        placeholder="Informe o usuário"
                         value={form.username}
                         onChange={onChange}
                         hasError={errors.username && true}
-                        error={errors.username}/>
+                        error={errors.username} />
                 </div>
-                <div className="col-4 mb-3">
-                    <Input className="form-control"
+            </div>
+            <div className="text-center col-12 mb-3">
+                <div className="col-4">
+                    <Input
                         name="password"
                         label="Informe a sua senha"
-                        type="password" placeholder="Informe a sua senha"
+                        type="password" 
+                        placeholder="Informe a sua senha"
                         value={form.password}
                         onChange={onChange}
                         hasError={errors.password && true}
                         error={errors.password}
-                        />
+                    />
                 </div>
-                <div className="col-4 mb-3">
-                    <Input className="form-control"
+            </div>
+            <div className="text-center col-12 mb-3">
+                <div className="col-4">
+                    <Input
                         name="passwordRepeat"
                         label="Repita a sua senha"
                         type="password" placeholder="Confirme sua senha"
@@ -118,25 +130,20 @@ export const UserSignupPage = (props) => {
                         hasError={passwordRepeatError && true}
                         error={errors.password} />
                 </div>
-                <div className="text-center">
-                    <ButtonWithProgress
-                        disabled={pendingApiCall || passwordRepeatError ? true : false}
-                        onClick={onClickSignup}
-                        pendingApiCall={pendingApiCall}
-                        text="Cadastrar"
-                    />
-                </div>
             </div>
-        )
-    };
-
-UserSignupPage.defaultProps = {
-    actions: {
-        postSignup: () =>
-            new Promise((resolve, reject) => {
-                resolve({});
-            }),
-    }
-}
+            <div className="text-center">
+                <ButtonWithProgress
+                    disabled={pendingApiCall || passwordRepeatError ? true : false}
+                    onClick={onClickSignup}
+                    pendingApiCall={pendingApiCall}
+                    text="Cadastrar"
+                />
+            </div>
+            <div className='text-center'>
+                já possui cadastro? <Link to="/">Login</Link>
+            </div>
+        </div>
+    )
+};
 
 export default UserSignupPage;

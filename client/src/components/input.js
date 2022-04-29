@@ -10,7 +10,8 @@ const Input = (props) => {
     return (
         <Form.Group>
             {props.label && (<Form.Label>{props.label}</Form.Label>)}
-            <Form.Control  
+            <Form.Control
+                name={props.name}
                 className={inputClassName}
                 type={props.type || 'text'}
                 placeholder={props.placeholder}
@@ -22,6 +23,6 @@ const Input = (props) => {
     )
 }
 Input.defaultProps = {
-    onChange: () => {}
+    onChange: () => { }
 }
 export default Input;
