@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("users")
-public class UserController {
+public class UserController extends GenericCrudController<User,Long> {
 
     @Autowired
     UserService userService;
