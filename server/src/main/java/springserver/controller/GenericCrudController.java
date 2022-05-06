@@ -1,39 +1,65 @@
 package springserver.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import springserver.service.GenericCrudService;
 
 import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-public class GenericCrudController<T,ID extends Serializable> {
+public abstract class GenericCrudController<T, ID extends Serializable> {
 
-    @Autowired
-    private GenericCrudService<T,ID> genericCrudService;
+    protected abstract GenericCrudService<T, ID> getService();
 
     @GetMapping
-    public List<T> getAll() {
-        return genericCrudService.findAll();
+    public List<T> findAll() {
+        return getService().findAll();
+    }
+
+    @GetMapping("page")
+    public Page<T> findAll(@RequestParam int page,
+                           @RequestParam int size,
+                           @RequestParam(required = false) String order,
+                           @RequestParam(required = false) Boolean asc) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        if (order != null && asc != null) {
+            pageRequest = PageRequest.of(page, size, asc ? Sort.Direction.ASC : Sort.Direction.DESC, order);
+        }
+        return getService().findAll(pageRequest);
     }
 
     @GetMapping("{id}")
-    public Optional<T> findOne(@PathVariable ID id) {
-        return genericCrudService.findOne(id);
+    public T findOne(@PathVariable ID id) {
+        return getService().findOne(id);
     }
 
     @PostMapping
-    public T save(@Valid @RequestBody T t) {
-        return genericCrudService.save(t);
+    public T save(@RequestBody @Valid T entity) {
+        return getService().save(entity);
+    }
+
+    @PutMapping
+    public T update(@RequestBody @Valid T entity) {
+        return getService().save(entity);
+    }
+
+    @GetMapping("exists/{id}")
+    public boolean exists(@PathVariable ID id) {
+        return getService().exists(id);
+    }
+
+    @GetMapping("count")
+    public long count() {
+        return getService().count();
     }
 
     @DeleteMapping("{id}")
     public void delete(@PathVariable ID id) {
-        genericCrudService.delete(id);
+        getService().delete(id);
     }
-
 
 }

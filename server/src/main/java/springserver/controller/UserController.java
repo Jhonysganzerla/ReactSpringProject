@@ -3,6 +3,7 @@ package springserver.controller;
 import org.springframework.http.ResponseEntity;
 import springserver.error.ApiError;
 import springserver.model.User;
+import springserver.service.GenericCrudService;
 import springserver.service.UserService;
 import springserver.shared.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,10 @@ public class UserController extends GenericCrudController<User,Long> {
     public GenericResponse signup(@Valid @RequestBody User user) {
         userService.save(user);
         return new GenericResponse("User registered successfully");
+    }
+
+    @Override
+    protected GenericCrudService<User, Long> getService() {
+        return userService;
     }
 }
