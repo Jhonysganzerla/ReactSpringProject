@@ -28,10 +28,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint)
+                .authenticationEntryPoint( authenticationEntryPoint )
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/users").permitAll()
+                .antMatchers(HttpMethod.POST,"/users").permitAll()
+
+                // .antMatchers("/categories").permitAll()
+
                 .anyRequest().authenticated()
                 .and()
                 // Filters
@@ -48,8 +51,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
-        auth.userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());
+        auth.userDetailsService( userDetailsService() )
+                .passwordEncoder( passwordEncoder() );
     }
 
     @Override

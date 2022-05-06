@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Input from '../../components/input';
 import ButtonWithProgress from '../../components/buttonWithProgress';
 
-import axios from "axios";
-import { Button, Alert } from "react-bootstrap";
 import AuthService from "../../services/Auth/auth.service";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -18,7 +16,6 @@ export const UserSignupPage = (props) => {
 
     const [pendingApiCall, setPendingApiCall] = useState(false);
     const [errors, setErrors] = useState({});
-    const [successMessage, setSuccessMessage] = useState('');
 
     const navigate = useNavigate();
 
@@ -48,20 +45,19 @@ export const UserSignupPage = (props) => {
             password: form.password,
         }
         setPendingApiCall(true);
-        AuthService.saveUser(user).then(response => {
-            form.errors = {};
+        AuthService.signup(user).then(response => {
+            setErrors({});
             setPendingApiCall(false);
             navigate('/');
-        })
-            .catch(apiError => {
+        }).catch( (apiError) => {
 
-                let errors = { ...errors }
+                console.log(apiError);                
                 if (apiError.response.data && apiError.response.data.validationErrors) {
-                    errors = { ...apiError.response.data.validationErrors }
+                    setErrors(apiError.response.data.validationErrors);
                 }
-                setPendingApiCall(true);
-                setErrors(errors);
-            });
+                setPendingApiCall(false);
+                
+        });
     }
 
     let passwordRepeatError;
@@ -72,11 +68,7 @@ export const UserSignupPage = (props) => {
 
     return (
         <div className="container">
-            {successMessage != '' && (<Alert variant="success" onClose={() => successMessage != ''} dismissible>
-                <Alert.Heading>Oh não! Ocorreu um erro!, mas deve ta verde</Alert.Heading>
-            </Alert>)}
-
-            <h1 >Sign Up</h1>
+            <h1 className="text-left" >Sign Up</h1>
             <div className="text-center col-12 mb-3">
                 <div className="col-4">
                     <Input

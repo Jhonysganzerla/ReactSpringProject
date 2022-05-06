@@ -16,6 +16,6 @@ public class MovimentoController extends GenericCrudController<Movimento,Long> {
 
     @Override
     protected GenericCrudService<Movimento, Long> getService() {
-        return movimentoService;
+        return movimentoService;    
     }
 }

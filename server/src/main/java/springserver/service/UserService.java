@@ -23,4 +23,9 @@ public class UserService extends GenericCrudServiceImpl<User,Long> {
         return userRepository;
     }
 
+    @Override
+    public User save(User entity) {
+        entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
+        return super.save(entity);
+    }
 }

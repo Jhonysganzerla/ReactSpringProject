@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import logo from "../assets/utfpr-logo.png";
+import logo from "../assets/imagem-logo.png";
 import AuthService from "../services/Auth/auth.service";
 
 const NavBar = (props) => {
@@ -15,7 +15,7 @@ const NavBar = (props) => {
             <div className="container">
                 <nav className="navbar navbar-light navbar-expand">
                     <Link to="/" className="navbar-brand">
-                        <img src={logo} width="60" alt="UTFPR" />
+                        <img src={logo} width="60" />
                     </Link>
                     <ul className="navbar-nav me-auto mb-2 mb-md-0">
                         <li className="nav-item">
