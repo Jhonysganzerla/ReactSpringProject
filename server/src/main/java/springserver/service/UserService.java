@@ -1,5 +1,6 @@
 package springserver.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import springserver.model.User;
 import springserver.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService extends GenericCrudServiceImpl<User,Long> {
 
+    @Autowired
     UserRepository userRepository;
     BCryptPasswordEncoder bCryptPasswordEncoder;
 

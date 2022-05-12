@@ -13,6 +13,7 @@ import java.util.Optional;
 @Service
 public class ContaService extends GenericCrudServiceImpl<Conta, Long> {
 
+    @Autowired
     ContaRepository contaRepository;
 
     @Override
