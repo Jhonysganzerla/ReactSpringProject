@@ -11,7 +11,7 @@ const NavBar = (props) => {
     };
 
     return (
-        <div className="bg-white shadow-sm mb-2">
+        <div className="shadow-sm mb-2 bg-primary">
             <div className="container">
                 <nav className="navbar navbar-light navbar-expand">
                     <Link to="/" className="navbar-brand">
@@ -19,15 +19,18 @@ const NavBar = (props) => {
                     </Link>
                     <ul className="navbar-nav me-auto mb-2 mb-md-0">
                         <li className="nav-item">
-                            <NavLink
-                                to="/"
-                                className={(navData) =>
-                                    navData.isActive ? "nav-link active" : "nav-link"
-                                }
-                            >
+                            <NavLink to="/" className={ (navData) => navData.isActive ? "nav-link active" : "nav-link"}>
                                 Home
                             </NavLink>
                         </li>
+
+                        <li className="nav-item">
+                            <NavLink to="/contas" className={ (navData) => navData.isActive ? "nav-link active" : "nav-link"}>
+                                Contas
+                            </NavLink>
+                        </li>
+
+
                         <li className="nav-item">
                             <button className="btn btn-light" onClick={onClickLogout}>
                                 &times; Sair
