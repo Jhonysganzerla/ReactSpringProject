@@ -51,7 +51,6 @@ export const UserSignupPage = (props) => {
             navigate('/');
         }).catch( (apiError) => {
 
-                console.log(apiError);                
                 if (apiError.response.data && apiError.response.data.validationErrors) {
                     setErrors(apiError.response.data.validationErrors);
                 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import ContaService from "../../services/Conta/conta.service";
 
 const ContaPageList = () => {
@@ -17,17 +18,33 @@ const ContaPageList = () => {
             setData(response.data);
             setApiError(null);
         }).catch(error => {
-            setApiError(error.response.data.error);
+            setApiError(error.response.data.message);
+        });
+    }
+
+    const onClickDelete = (id) => {
+        ContaService.remove(id).then(response => {
+            loadData();
+            setApiError(null);
+        }).catch((error) => {
+            setApiError(error.response.data.message);
         });
     }
 
     return (
         <div className="container">
-            <h1 className="tex-center">Lista de Contas</h1>
+            <h1 className="text-center">Lista de Contas</h1>
 
+
+            <div className="text-left">
+                <Link to="/contas/new" className="btn btn-success">
+                    Cadastrar
+                </Link>
+            </div>
             <table className="table table-striped">
                 <thead>
                     <tr>
+                        <th>Ações</th>
                         <th>Código</th>
                         <th>Numero</th>
                         <th>Agencia</th>
@@ -38,15 +55,23 @@ const ContaPageList = () => {
                 <tbody>
                     {data.map(item => (
                         <tr key={item.id}>
+                            <td className="col-2">
+                                <Link   className="col-6 btn btn-sm btn-primary" to={`/contas/${item.id}`} >Editar</Link>
+                                <button className="col-6 btn btn-sm btn-danger" onClick={() => onClickDelete(item.id)}>Excluir</button>
+                            </td>
                             <td>{item.id}</td>
                             <td>{item.numero}</td>
                             <td>{item.agencia}</td>
                             <td>{item.banco}</td>
-                            <td>{item.tipo}</td>
+                            <td>{item.tipoconta}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+
+            {apiError && (
+                    <div className="alert alert-danger">{apiError}</div>
+                )}
         </div>
     );
 
