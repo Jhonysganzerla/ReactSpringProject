@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ButtonWithProgress from "../../components/buttonWithProgress";
 import Input from "../../components/input";
-import ContaService from "../../services/Conta/conta.service";
+import ContaService from "../../services/conta.service";
 
 const ContaPageForm = () => {
 
@@ -61,6 +61,11 @@ const ContaPageForm = () => {
     const onSubmit = (event) => {
         event.preventDefault();
         setPendingApiCall(true);
+
+        if(form.tipoconta == null || form.tipoconta === ''){
+            setForm({tipoconta: 'CC'});
+        }   
+
         ContaService.save(form).then(() => {
             setPendingApiCall(false);
             navigate("/contas");
@@ -114,9 +119,9 @@ const ContaPageForm = () => {
             <div className="col-12 mb-3">
                 <label>Tipo de Conta</label>
                 <select className="form-control" name="tipoconta" value={form.tipoconta} onChange={onChange}>
-                    <option value="1">Corrente</option>
-                    <option value="2">Poupança</option>
-                    <option value="3">Cartão</option>
+                    <option value="CC">Corrente</option>
+                    <option value="CP">Poupança</option>
+                    <option value="CARTAO">Cartão</option>
                 </select>
 
                 {errors.tipoconta && ( <div className="alert alert-danger">{errors.tipoconta}</div>)}

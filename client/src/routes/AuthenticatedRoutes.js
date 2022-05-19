@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar";
 import ContaPageForm from "../pages/Conta/ContaPageForm";
 import ContaPageList from "../pages/Conta/ContaPageList";
 import HomePage from "../pages/HomePage/HomePage";
+import MovimentoPageForm from "../pages/Movimento/MovimentoForm";
 import MovimentoPageList from "../pages/Movimento/MovimentoPageList";
 
 const AuthenticatedRoutes = () => {
@@ -18,6 +19,9 @@ const AuthenticatedRoutes = () => {
                 <Route path="/contas/:id" element={<ContaPageForm />} />
 
                 <Route path="/movimentos" element={<MovimentoPageList />} />
+                <Route path="/movimentos/new" element={<MovimentoPageForm />} />
+                <Route path="/movimentos/:id" element={<MovimentoPageForm />} />
+
 
                 <Route path="/*" element={<HomePage />} />
             </Routes>

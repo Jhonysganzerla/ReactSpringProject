@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ContaService from "../../services/Conta/conta.service";
+import ContaService from "../../services/conta.service";
 
 const ContaPageList = () => {
 
