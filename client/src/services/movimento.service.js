@@ -16,6 +16,9 @@ const remove = (idMovimento) => {
   return axios.delete(`/movimento/${idMovimento}` , {headers:getAuthHeader()});
 }
 
+const findAllSumMovimentoByContas = () => {
+  return axios.get("/movimento/sumMovimentoByContas", {headers:getAuthHeader()});
+}
 
 const getAuthHeader = () => {
   const token = JSON.parse(localStorage.getItem('token'));
@@ -30,6 +33,7 @@ const MovimentoService = {
   findAll,
   findOne,
   remove,
+  findAllSumMovimentoByContas,
 };
 
 

@@ -6,18 +6,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import springserver.model.Conta;
 import springserver.repository.ContaRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ContaService extends GenericCrudServiceImpl<Conta, Long> {
 
     @Autowired
     ContaRepository contaRepository;
+
+    @Autowired
+    UserService userService;
 
     @Override
     protected JpaRepository<Conta, Long> getRepository() {
@@ -27,21 +28,21 @@ public class ContaService extends GenericCrudServiceImpl<Conta, Long> {
 
     @Override
     public List<Conta> findAll() {
-        return super.findAll();
+        return contaRepository.findAllByUser(userService.getCurrentUser());
     }
 
     @Override
     public List<Conta> findAll(Sort sort) {
-        return super.findAll(sort);
+        return contaRepository.findAllByUser(userService.getCurrentUser(),sort);
     }
 
     @Override
     public Page<Conta> findAll(Pageable pageable) {
-        return super.findAll(pageable);
+        return contaRepository.findAllByUser(userService.getCurrentUser(),pageable);
     }
 
     @Override
     public Conta findOne(Long aLong) {
-        return super.findOne(aLong);
+        return contaRepository.findByIdAndUser(aLong,userService.getCurrentUser());
     }
 }

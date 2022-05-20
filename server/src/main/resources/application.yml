@@ -11,3 +11,5 @@ spring:
         persistence:
             validation:
                 mode: none
+      hibernate:
+        show_sql: true

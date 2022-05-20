@@ -1,6 +1,8 @@
 package springserver.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import springserver.model.enumerators.ContaTipo;
 
 import javax.persistence.*;
@@ -8,6 +10,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Conta {
 
@@ -36,4 +40,7 @@ public class Conta {
     @NotNull(message = "O campo 'tipo' é obrigatório")
     private ContaTipo tipoconta;
 
+    public Conta(String id) {
+        this.id = Long.parseLong(id);
+    }
 }

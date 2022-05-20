@@ -70,7 +70,6 @@ const ContaPageForm = () => {
             setPendingApiCall(false);
             navigate("/contas");
         }).catch((apiError) => {
-            console.log(apiError)
             setPendingApiCall(false);
             if (apiError.response.data.validationErrors) {
                 setErrors(apiError.response.data.validationErrors);

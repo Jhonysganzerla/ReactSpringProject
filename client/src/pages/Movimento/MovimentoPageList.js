@@ -57,6 +57,7 @@ const MovimentoPageList = () => {
             <table className="table table-striped">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Código</th>
                         <th>Valor</th>
                         <th>Descricao</th>
@@ -64,7 +65,7 @@ const MovimentoPageList = () => {
                         <th>Data de Vencimento</th>
                         <th>Valor Pago</th>
                         <th>Valor</th>
-                        <th>conta</th>
+                        <th>Conta</th>
                         <th>Tipo de Movimento</th>
                     </tr>
                 </thead>
@@ -82,7 +83,7 @@ const MovimentoPageList = () => {
                             <td>{getParsedDate(item.datavencimento)}</td>
                             <td>{item.valorpago}</td>
                             <td>{item.valor}</td>
-                            <td>{item.conta.descricao}</td>
+                            <td>{item.conta.id} - {item.conta.numero}</td>
                             <td>{item.movimentotipo}</td>
                         </tr>
                     ))}
