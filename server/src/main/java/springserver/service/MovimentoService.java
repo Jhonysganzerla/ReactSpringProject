@@ -59,8 +59,11 @@ public class MovimentoService extends GenericCrudServiceImpl<Movimento,Long> {
         movimentos.stream().forEach(movimento -> {
             if(movimento.getMovimentotipo().equals(MovimentoTipo.RECEITA)){
                 somatorioDeContas.add(new MovimentoByContasDTO(movimento.getConta(),movimento.getValor(),movimento.getValorpago()));
-            }else{
+            }else if (movimento.getMovimentotipo().equals(MovimentoTipo.DESPESA)){
                 somatorioDeContas.add(new MovimentoByContasDTO(movimento.getConta(),movimento.getValor().multiply(negativeOne),movimento.getValorpago().multiply(negativeOne)));
+            } else if (movimento.getMovimentotipo().equals(MovimentoTipo.TRANSFERENCIA)){
+                somatorioDeContas.add(new MovimentoByContasDTO(movimento.getConta(),movimento.getValor().multiply(negativeOne),movimento.getValorpago().multiply(negativeOne)));
+                somatorioDeContas.add(new MovimentoByContasDTO(movimento.getContadestino(),movimento.getValor(),movimento.getValorpago()));
             }
         });
 
@@ -69,6 +72,7 @@ public class MovimentoService extends GenericCrudServiceImpl<Movimento,Long> {
             movimentoByContasDTO.setConta(entry.getKey());
             movimentoByContasDTO.setValor(entry.getValue().stream().map(MovimentoByContasDTO::getValor).reduce(BigDecimal.ZERO,BigDecimal::add));
             movimentoByContasDTO.setValorpago(entry.getValue().stream().map(MovimentoByContasDTO::getValorpago).reduce(BigDecimal.ZERO,BigDecimal::add));
+
             return movimentoByContasDTO;
         }).collect(Collectors.toList());
 

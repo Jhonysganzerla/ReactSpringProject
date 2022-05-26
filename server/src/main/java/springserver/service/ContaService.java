@@ -25,7 +25,6 @@ public class ContaService extends GenericCrudServiceImpl<Conta, Long> {
         return contaRepository;
     }
 
-
     @Override
     public List<Conta> findAll() {
         return contaRepository.findAllByUser(userService.getCurrentUser());

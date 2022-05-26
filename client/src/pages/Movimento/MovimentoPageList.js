@@ -83,7 +83,7 @@ const MovimentoPageList = () => {
                             <td>{getParsedDate(item.datavencimento)}</td>
                             <td>{item.valorpago}</td>
                             <td>{item.valor}</td>
-                            <td>{item.conta.id} - {item.conta.numero}</td>
+                            <td>{item.conta.banco} - {item.conta.agencia} - {item.conta.numero}</td>
                             <td>{item.movimentotipo}</td>
                         </tr>
                     ))}

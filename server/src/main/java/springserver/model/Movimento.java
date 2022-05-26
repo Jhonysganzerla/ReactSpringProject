@@ -13,12 +13,16 @@ import java.time.LocalDate;
 public class Movimento {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
     @JoinColumn(name = "conta_id")
     private Conta conta;
+
+    @ManyToOne
+    @JoinColumn(name = "conta_destino_id")
+    private Conta contadestino;
 
     @NotNull(message = "O campo valor não pode ser nulo")
     private BigDecimal valor;

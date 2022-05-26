@@ -11,11 +11,12 @@ const MovimentoPageForm = () => {
         id: null,
         conta: undefined,
         descricao: '',
-        datavencimento: Date.now(),
-        datapagamento: Date.now(),
-        valorpago: 0,
+        datavencimento: new Date().toISOString().substring(0, 10),
+        datapagamento: new Date().toISOString().substring(0, 10),
+        valorpago:  0,
         valor: 0,
         movimentotipo: 'RECEITA',
+        contadestino: undefined,
     });
 
 
@@ -63,13 +64,22 @@ const MovimentoPageForm = () => {
     const onChange = (event) => {
         const { value, name } = event.target;
 
-        setForm((previousForm) => {
-            return {
-                ...previousForm,
-                [name]: value,
-            };
-        });
-
+        if (name == 'movimentotipo') {
+            setForm((previousForm) => {
+                return {
+                    ...previousForm,
+                    [name]: value,
+                    "contadestino": undefined,
+                }
+            });
+        } else {
+            setForm((previousForm) => {
+                return {
+                    ...previousForm,
+                    [name]: value,
+                };
+            });
+        }
         setErrors((previousErrors) => {
             return {
                 ...previousErrors,
@@ -150,6 +160,7 @@ const MovimentoPageForm = () => {
                     <Input
                         label="Valor"
                         name="valor"
+                        type="number"
                         placeholder="valor"
                         value={form.valor}
                         onChange={onChange}
@@ -161,6 +172,7 @@ const MovimentoPageForm = () => {
                     <Input
                         label="Valor Pago"
                         name="valorpago"
+                        type="number"
                         placeholder="valorpago"
                         value={form.valorpago}
                         onChange={onChange}
@@ -194,6 +206,25 @@ const MovimentoPageForm = () => {
                 {errors.movimentotipo && (<div className="alert alert-danger">{errors.movimentotipo}</div>)}
 
             </div>
+
+            {form.movimentotipo == 'TRANSFERENCIA' && (
+                <div className="col-12 mb-3">
+                    <label>Conta de Destino</label>
+                    <select
+                        className="form-control"
+                        name="contadestino"
+                        value={form.contadestino}
+                        onChange={onChange}
+                    >
+                        {contas.map((conta) => (
+                            <option key={conta.id} value={conta.id}>
+                                {conta.banco} - {conta.agencia} -  {conta.numero}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
+
             <div className="col-12 mb-3">
                 <ButtonWithProgress
                     text="Salvar"

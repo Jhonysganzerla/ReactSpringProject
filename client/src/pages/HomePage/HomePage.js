@@ -38,7 +38,7 @@ const HomePage = () => {
                 <tbody>
                     {data.map(item => (
                         <tr key={item.id}>
-                            <td>{item.conta.id} - {item.conta.numero}</td>
+                            <td>{item.conta.banco} - {item.conta.agencia} - {item.conta.numero}</td>
                             <td>{item.valor}</td>
                             <td>{item.valorpago}</td>
                         </tr>

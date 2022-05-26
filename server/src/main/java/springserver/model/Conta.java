@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 public class Conta {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
