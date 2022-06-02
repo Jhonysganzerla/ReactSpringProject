@@ -14,6 +14,7 @@ import springserver.service.GenericCrudService;
 import springserver.service.MovimentoService;
 import springserver.service.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,7 +33,7 @@ public class ContaController extends GenericCrudController<Conta, Long> {
     }
 
     @Override
-    public Conta save(@RequestBody Conta entity) {
+    public Conta save(@RequestBody @Valid Conta entity) {
         entity.setUser(userService.getCurrentUser());
         return super.save(entity);
     }

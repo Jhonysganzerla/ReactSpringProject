@@ -22,13 +22,13 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull(message = "{user.constraints.NotNull.message}")
-    @Size(min = 4, max = 255, message = " O tamanho deve ser entre {min} e {max}")
+    @NotNull
+    @Size(min = 4, max = 255, message = "O campo nome não pode ser vazio, e deve ter tamanho deve ser entre {min} e {max}")
     @UniqueUsername
     private String username;
 
     @NotNull
-    @Size(min = 4, max = 255, message = " O tamanho deve ser entre {min} e {max}")
+    @Size(min = 4, max = 255,message = "O campo usuario não pode ser vazio, O tamanho deve ser entre {min} e {max}")
     private String displayname;
 
     @NotNull

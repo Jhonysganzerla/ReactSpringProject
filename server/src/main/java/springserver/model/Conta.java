@@ -3,6 +3,7 @@ package springserver.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import springserver.model.enumerators.ContaTipo;
 
 import javax.persistence.*;
@@ -19,25 +20,24 @@ public class Conta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
-    @NotNull(message = "O campo 'user' é obrigatório")
     private User user;
 
-    @Size(max = 255)
-    @NotNull(message = "O campo 'numero' é obrigatório")
+    @NotNull
+    @Size(min = 1, max = 255,  message = "Este campo é obrigatorio")
     private String numero;
 
-    @Size(max = 255)
-    @NotNull(message = "O campo 'agencia' é obrigatório")
+    @NotNull
+    @Size(min = 1, max = 255, message = "Este campo é obrigatorio")
     private String agencia;
 
-    @Size(max = 255)
-    @NotNull(message = "O campo 'banco' é obrigatório")
+    @NotNull
+    @Size(min = 1, max = 255, message = "Este campo é obrigatorio")
     private String banco;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "O campo 'tipo' é obrigatório")
     private ContaTipo tipoconta;
 
     public Conta(String id) {
