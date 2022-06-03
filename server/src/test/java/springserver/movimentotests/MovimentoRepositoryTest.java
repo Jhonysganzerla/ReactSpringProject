@@ -7,11 +7,15 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import springserver.model.Conta;
 import springserver.model.Movimento;
+import springserver.model.User;
 import springserver.model.enumerators.ContaTipo;
 import springserver.model.enumerators.MovimentoTipo;
+import springserver.repository.ContaRepository;
 import springserver.repository.MovimentoRepository;
 
 import java.math.BigDecimal;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -23,27 +27,39 @@ public class MovimentoRepositoryTest {
     @Autowired
     MovimentoRepository movimentoRepository;
 
+    @Autowired
+    ContaRepository contaRepository;
+
     @Test
     public void testFindByConta() {
 
         Movimento movimento = new Movimento();
         Conta conta = new Conta();
+        User user = new User();
 
-        conta.setId(1L);
+        user.setDisplayname("test-displayName");
+        user.setUsername("test-username");
+        user.setPassword("P4ssword");
+
+        testEntityManager.persist(user);
+
         conta.setAgencia("1234");
         conta.setNumero("12345");
         conta.setTipoconta(ContaTipo.CC);
+        conta.setUser(user);
+
+        testEntityManager.persist(conta);
 
         movimento.setConta(conta);
         movimento.setValor(new BigDecimal(100L));
         movimento.setMovimentotipo(MovimentoTipo.DESPESA);
         movimento.setDescricao("Teste");
 
-        testEntityManager.persist(conta);
         testEntityManager.persist(movimento);
         testEntityManager.flush();
 
-        movimentoRepository.findByConta(conta);
+        Movimento movimentoDB = movimentoRepository.findByConta(conta);
+        assertThat(movimentoDB).isNotNull();
     }
 
     @Test
@@ -51,22 +67,31 @@ public class MovimentoRepositoryTest {
 
         Movimento movimento = new Movimento();
         Conta conta = new Conta();
+        User user = new User();
 
-        conta.setId(1L);
+        user.setDisplayname("test-displayName");
+        user.setUsername("test-username");
+        user.setPassword("P4ssword");
+
+        testEntityManager.persist(user);
+
         conta.setAgencia("1234");
         conta.setNumero("12345");
+        conta.setUser(user);
         conta.setTipoconta(ContaTipo.CC);
+
+        testEntityManager.persist(conta);
 
         movimento.setConta(conta);
         movimento.setValor(new BigDecimal(100L));
         movimento.setMovimentotipo(MovimentoTipo.DESPESA);
         movimento.setDescricao("Teste");
 
-        testEntityManager.persist(conta);
         testEntityManager.persist(movimento);
         testEntityManager.flush();
 
-        movimentoRepository.findByContaIdAndMovimentotipo(1L, MovimentoTipo.DESPESA);
+        Movimento movimentoDB = movimentoRepository.findByContaAndMovimentotipo(conta, MovimentoTipo.DESPESA);
+        assertThat(movimentoDB).isNotNull();
     }
 
 

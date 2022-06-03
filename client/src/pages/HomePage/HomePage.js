@@ -12,8 +12,6 @@ const HomePage = () => {
 
     }, []);
 
-
-
     const loadData = () => {
         MovimentoService.findAllSumMovimentoByContas().then(response => {
             setData(response.data);
@@ -26,8 +24,10 @@ const HomePage = () => {
 
     return (
         <div className="container">
-            <h1>Home</h1>
-            <table className="table table-striped">
+            <h3>Relatório de Totais em Conta</h3>
+            <button className="btn btn-primary" onClick={() => window.print()}> Imprimir Relatório</button>
+
+            <table id="table" className="table table-striped">
                 <thead>
                     <tr>
                         <th>Conta</th>
@@ -50,6 +50,7 @@ const HomePage = () => {
                 <div className="alert alert-danger">{apiError}</div>
             )}
         </div>
+
 
 
     );

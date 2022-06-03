@@ -49,34 +49,58 @@ public class MovimentoService extends GenericCrudServiceImpl<Movimento,Long> {
     public Movimento findOne(Long aLong) {
         return movimentoRepository.findByIdAndContaUser(aLong,userService.getCurrentUser());
     }
-
     public List<MovimentoByContasDTO> sumMovimentoByContas(){
 
         List<MovimentoByContasDTO> somatorioDeContas = new ArrayList<>();
-        List<Movimento> movimentos = movimentoRepository.findAllByContaUser(userService.getCurrentUser());
-        BigDecimal negativeOne = new BigDecimal(-1);
 
-        movimentos.stream().forEach(movimento -> {
+        //Busca por todos usuario filtrando o logado
+        List<Movimento> movimentos = movimentoRepository.findAllByContaUser(userService.getCurrentUser());
+
+        //Variavel que salva -1 para facilitar a leitura do código
+        final BigDecimal negativeOne = new BigDecimal(-1);
+
+        //Adiciona todos os movimentos para uma lista de movimentações, fazendo a correção de valor por cada tipo
+        movimentos.forEach(movimento -> {
             if(movimento.getMovimentotipo().equals(MovimentoTipo.RECEITA)){
-                somatorioDeContas.add(new MovimentoByContasDTO(movimento.getConta(),movimento.getValor(),movimento.getValorpago()));
+                somatorioDeContas.add(new MovimentoByContasDTO(
+                        movimento.getConta(),
+                        movimento.getValor(),movimento.getValorpago()
+                ));
             }else if (movimento.getMovimentotipo().equals(MovimentoTipo.DESPESA)){
-                somatorioDeContas.add(new MovimentoByContasDTO(movimento.getConta(),movimento.getValor().multiply(negativeOne),movimento.getValorpago().multiply(negativeOne)));
+                somatorioDeContas.add(new MovimentoByContasDTO(
+                        movimento.getConta(),movimento.getValor().multiply(negativeOne),
+                        movimento.getValorpago().multiply(negativeOne)
+                ));
             } else if (movimento.getMovimentotipo().equals(MovimentoTipo.TRANSFERENCIA)){
-                somatorioDeContas.add(new MovimentoByContasDTO(movimento.getConta(),movimento.getValor().multiply(negativeOne),movimento.getValorpago().multiply(negativeOne)));
-                somatorioDeContas.add(new MovimentoByContasDTO(movimento.getContadestino(),movimento.getValor(),movimento.getValorpago()));
+                somatorioDeContas.add(new MovimentoByContasDTO(
+                        movimento.getConta(),
+                        movimento.getValor().multiply(negativeOne),
+                        movimento.getValorpago().multiply(negativeOne)));
+                somatorioDeContas.add(new MovimentoByContasDTO(
+                        movimento.getContadestino(),
+                                movimento.getValor(),
+                                movimento.getValorpago()
+                        ));
             }
         });
 
-        List<MovimentoByContasDTO> contasAgrupadas = somatorioDeContas.stream().collect(Collectors.groupingBy(MovimentoByContasDTO::getConta)).entrySet().stream().map(entry -> {
+        //Após criar a lista de valores das movimentações com valor calculado, soma e agrupa por conta.
+        return somatorioDeContas.stream().collect(Collectors.groupingBy(MovimentoByContasDTO::getConta))
+                .entrySet().stream().map(entry -> {
             MovimentoByContasDTO movimentoByContasDTO = new MovimentoByContasDTO();
+
             movimentoByContasDTO.setConta(entry.getKey());
-            movimentoByContasDTO.setValor(entry.getValue().stream().map(MovimentoByContasDTO::getValor).reduce(BigDecimal.ZERO,BigDecimal::add));
-            movimentoByContasDTO.setValorpago(entry.getValue().stream().map(MovimentoByContasDTO::getValorpago).reduce(BigDecimal.ZERO,BigDecimal::add));
+
+            movimentoByContasDTO.setValor(entry.getValue().stream()
+                    .map(MovimentoByContasDTO::getValor)
+                    .reduce(BigDecimal.ZERO,BigDecimal::add));
+
+            movimentoByContasDTO.setValorpago(entry.getValue().stream()
+                    .map(MovimentoByContasDTO::getValorpago)
+                    .reduce(BigDecimal.ZERO,BigDecimal::add));
 
             return movimentoByContasDTO;
         }).collect(Collectors.toList());
-
-        return contasAgrupadas;
     }
 
 }

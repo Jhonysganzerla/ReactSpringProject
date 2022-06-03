@@ -69,22 +69,19 @@ export const UserSignupPage = (props) => {
         <div className="container">
             <h1 className="text-left" >Sign Up</h1>
             <div className="text-center col-12 mb-3">
-                <div className="col-4">
                     <Input
                         name="displayname"
                         label="Informe o seu nome"
                         type="text"
-                        placeholder="Informe o seu nome"
+                        placeholder="Informe seu nome"
                         value={form.displayname}
                         onChange={onChange}
                         hasError={errors.displayname && true}
                         error={errors.displayname}
                     />
-                </div>
 
             </div>
             <div className="text-center col-12 mb-3">
-                <div className="col-4">
                     <Input
                         name="username"
                         label="Informe o usuário"
@@ -94,24 +91,20 @@ export const UserSignupPage = (props) => {
                         onChange={onChange}
                         hasError={errors.username && true}
                         error={errors.username} />
-                </div>
             </div>
             <div className="text-center col-12 mb-3">
-                <div className="col-4">
                     <Input
                         name="password"
                         label="Informe a sua senha"
                         type="password" 
-                        placeholder="Informe a sua senha"
+                        placeholder="Informe sua senha"
                         value={form.password}
                         onChange={onChange}
                         hasError={errors.password && true}
                         error={errors.password}
                     />
-                </div>
             </div>
             <div className="text-center col-12 mb-3">
-                <div className="col-4">
                     <Input
                         name="passwordRepeat"
                         label="Repita a sua senha"
@@ -120,7 +113,6 @@ export const UserSignupPage = (props) => {
                         onChange={onChange}
                         hasError={passwordRepeatError && true}
                         error={errors.password} />
-                </div>
             </div>
             <div className="text-center">
                 <ButtonWithProgress
@@ -131,7 +123,7 @@ export const UserSignupPage = (props) => {
                 />
             </div>
             <div className='text-center'>
-                já possui cadastro? <Link to="/">Login</Link>
+                Já possui cadastro? <Link to="/">Login</Link>
             </div>
         </div>
     )

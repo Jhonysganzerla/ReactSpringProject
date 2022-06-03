@@ -11,7 +11,7 @@ const ContaPageForm = () => {
         numero: '',
         agencia: '',
         banco: '',
-        tipoconta: '',
+        tipoconta: 'CC',
         user: null,
     });
 
@@ -67,16 +67,18 @@ const ContaPageForm = () => {
         }   
 
         ContaService.save(form).then(() => {
+            setErrors({});
             setPendingApiCall(false);
             navigate("/contas");
         }).catch((apiError) => {
             setPendingApiCall(false);
-            if (apiError.response.data.validationErrors) {
+            if (apiError.response.data && apiError.response.data.validationErrors) {
+                console.log(apiError.response.data.validationErrors)
                 setErrors(apiError.response.data.validationErrors);
             } else {
                 setApiError('Ocorreu um erro ao salvar a conta');
             }
-        });
+            });
     };
 
     return (
